@@ -13,7 +13,7 @@ class MailerController extends Controller
         ////////////send email////////////
         public function sendEmail(Request $request,$email)
         {
-            
+            dd('heyyyy');
             $pin = $this->generatePin();
             $otp = $this->generateOtp(); 
                     $codeVerification = [
