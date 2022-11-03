@@ -15,6 +15,7 @@ class MailerController extends Controller
         {
             dd('heyyyy');
             $pin = $this->generatePin();
+            dd($pin);
             $otp = $this->generateOtp(); 
                     $codeVerification = [
                         'email'=>$email,
