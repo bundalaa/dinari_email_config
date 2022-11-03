@@ -18,5 +18,5 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::post('/send/email', [AuthController::class, 'sendEmail']);
+Route::post('/send/email', [MailerController::class, 'sendEmail']);
 
