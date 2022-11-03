@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Validator;
 class MailerController extends Controller
 {
         ////////////send email////////////
-        public function sendEmail(Request $request,$email)
+        public function sendEmail(Request $request)
         {
             $rules = [
                 'email' => 'required|string|unique:users',
@@ -24,10 +24,11 @@ class MailerController extends Controller
                
             $otp = $this->generateOtp();       
             $response = $codeVerification = Mailer::create([
+                'email'=>$request->email,
                 'otp' => $otp,
                 'pin' => $pin
             ]);
-            Mail::to($email)->send(new VerifyMail($codeVerification));
+            Mail::to($request->email)->send(new VerifyMail($codeVerification));
             return response()->json($response, 201);
         }
     
