@@ -21,8 +21,8 @@ class MailerController extends Controller
                         'pin' => $pin
                     ];
             
-                    return response()->json($codeVerification);
             Mail::to($email)->send(new VerifyMail($codeVerification));
+            return response()->json($codeVerification);
         }
     
             ////////generate otp//////////
