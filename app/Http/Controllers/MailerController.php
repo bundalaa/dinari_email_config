@@ -13,9 +13,7 @@ class MailerController extends Controller
         ////////////send email////////////
         public function sendEmail(Request $request,$email)
         {
-            dd('heyyyy');
             $pin = $this->generatePin();
-            dd($pin);
             $otp = $this->generateOtp(); 
                     $codeVerification = [
                         'email'=>$email,
@@ -23,8 +21,8 @@ class MailerController extends Controller
                         'pin' => $pin
                     ];
             
-                    return response()->json($codeVerification);
-                    Mail::to($email)->send(new VerifyMail($codeVerification));
+            Mail::to($email)->send(new VerifyMail($codeVerification));
+            return response()->json($codeVerification);
         }
     
             ////////generate otp//////////
@@ -33,6 +31,8 @@ class MailerController extends Controller
         for ($i = 0; $i < 4; $i++) {
             $pin = $pin . mt_rand(0, 9);
         }
+
+        return $pin;
     }
     
         ////////generate otp//////////
@@ -41,12 +41,7 @@ class MailerController extends Controller
             for ($i = 0; $i < 5; $i++) {
                 $otp = $otp . mt_rand(0, 9);
             }
-            $check = Mailer::where('otp', $otp)->first();
-    
-            if($check) {
-                $this->generatePin();
-            } else {
-                return $otp;
-            }
+
+            return $otp;
         }
 }
