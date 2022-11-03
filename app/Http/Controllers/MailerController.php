@@ -14,7 +14,7 @@ class MailerController extends Controller
         public function sendEmail(Request $request)
         {
             $rules = [
-                'email' => 'required|string|unique:users',
+                'email' => 'required',
             ];
             $validator = Validator::make($request->all(), $rules);
             if ($validator->fails()) {
