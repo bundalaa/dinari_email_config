@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\VerifyMail;
+use App\Models\Mailer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
@@ -19,10 +20,10 @@ class MailerController extends Controller
             if ($validator->fails()) {
                 return response()->json($validator->errors(), 400);
             }
-            $pin = $this->generatePin();    
-            $otp = $this->generateOtp();  
-                 
-            $response = $codeVerification = ([
+            $pin = $this->generatePin();
+               
+            $otp = $this->generateOtp();       
+            $response = $codeVerification = Mailer::create([
                 'otp' => $otp,
                 'pin' => $pin
             ]);
@@ -30,7 +31,7 @@ class MailerController extends Controller
             return response()->json($response, 201);
         }
     
-            ////////generate pin//////////
+            ////////generate otp//////////
     public function generatePin() {
         $pin = '';
         for ($i = 0; $i < 4; $i++) {
@@ -43,6 +44,13 @@ class MailerController extends Controller
             $otp = '';
             for ($i = 0; $i < 5; $i++) {
                 $otp = $otp . mt_rand(0, 9);
+            }
+            $check = Mailer::where('otp', $otp)->first();
+    
+            if($check) {
+                $this->generatePin();
+            } else {
+                return $otp;
             }
         }
 }
