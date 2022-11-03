@@ -15,6 +15,7 @@ class MailerController extends Controller
         {
             $validator = Validator::make($request->all(),[
                 'email' => 'required',
+                'otp'=> 'required'
             ]);
             if($validator->fails())
             {
@@ -24,30 +25,13 @@ class MailerController extends Controller
             $otp = $this->generateOtp(); 
                     $data = $codeVerification = new Mailer([
                         'email'=>$request->get('email'),
-                        'otp' => $otp,
-                        'pin' => $pin
+                        'otp' => $request->get('otp'),
+                        // 'pin' => $pin
                     ]);
             
                     $data->save();
                     Mail::to($request->email)->send(new VerifyMail($codeVerification));
                     return response()->json($data);
-            // $rules = [
-            //     'email' => 'required',
-            // ];
-            // $validator = Validator::make($request->all(), $rules);
-            // if ($validator->fails()) {
-            //     return response()->json($validator->errors(), 400);
-            // }
-            // $pin = $this->generatePin();
-               
-            // $otp = $this->generateOtp();       
-            // $response = $codeVerification = Mailer::create([
-            //     'email'=>$request->email,
-            //     'otp' => $otp,
-            //     'pin' => $pin
-            // ]);
-            // Mail::to($request->email)->send(new VerifyMail($codeVerification));
-            // return response()->json($response, 201);
         }
     
             ////////generate otp//////////
